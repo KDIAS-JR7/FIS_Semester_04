@@ -1,13 +1,18 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import { classNames } from "../util/lang"
 
+const script = `
+document.addEventListener("nav", () => {
+  document.querySelector(".print-button-btn")?.addEventListener("click", () => window.print())
+})
+`
+
 const PrintButton: QuartzComponent = ({ displayClass }: QuartzComponentProps) => {
   return (
     <div class={classNames(displayClass, "print-button")}>
       <button
         type="button"
         class="print-button-btn"
-        onClick={() => window.print()}
         aria-label="Download as PDF"
         title="Download as PDF"
       >
@@ -58,5 +63,7 @@ PrintButton.css = `
   color: var(--secondary);
 }
 `
+
+PrintButton.afterDOMLoaded = script
 
 export default (() => PrintButton) satisfies QuartzComponentConstructor
