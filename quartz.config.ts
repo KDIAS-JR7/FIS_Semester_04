@@ -8,16 +8,22 @@ import * as Plugin from "./quartz/plugins"
  */
 const config: QuartzConfig = {
   configuration: {
-    pageTitle: "Quartz 4",
+    pageTitle: "Kaveesh's Notes",
     pageTitleSuffix: "",
     enableSPA: true,
     enablePopovers: true,
-    analytics: {
-      provider: "plausible",
-    },
+    analytics: null,
     locale: "en-US",
-    baseUrl: "quartz.jzhao.xyz",
-    ignorePatterns: ["private", "templates", ".obsidian"],
+    baseUrl: "KDIAS-JR7.github.io/FIS_Semester_04",
+    ignorePatterns: [
+      "private",
+      "templates",
+      ".obsidian",
+      "Capstone Project/**",
+      "Capstone P/**",
+      "Tags",
+      "PastedImages",
+    ],
     defaultDateType: "modified",
     theme: {
       fontOrigin: "googleFonts",

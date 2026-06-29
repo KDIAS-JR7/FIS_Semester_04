@@ -1,0 +1,3 @@
+---
+banner: Images/cover.jpg
+---

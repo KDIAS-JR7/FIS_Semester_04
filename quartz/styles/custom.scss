@@ -1,3 +1,50 @@
 @use "./base.scss";
 
 // put your custom CSS here!
+
+@media print {
+  @page {
+    margin: 1.5cm;
+  }
+
+  .sidebar,
+  .print-button,
+  #explorer,
+  .graph,
+  .backlinks,
+  .page-footer,
+  .page-header,
+  .mobile-only,
+  .desktop-only:not(.toc) {
+    display: none !important;
+  }
+
+  .page > #quartz-body {
+    grid-template-columns: 1fr !important;
+    grid-template-areas: "grid-center" !important;
+  }
+
+  .center > article {
+    max-width: 100% !important;
+  }
+
+  a {
+    color: var(--dark) !important;
+    text-decoration: underline !important;
+  }
+
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: var(--gray);
+  }
+
+  pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  body {
+    font-size: 11pt;
+  }
+}
