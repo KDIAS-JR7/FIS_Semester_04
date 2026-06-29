@@ -1,6 +1,23 @@
 @use "./base.scss";
 
-// put your custom CSS here!
+// Catppuccin Mocha / Latte theme tweaks
+::selection {
+  background: color-mix(in srgb, #cba6f7 50%, transparent) !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gray) !important;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+pre,
+code {
+  font-family: "JetBrains Mono", var(--codeFont);
+}
 
 @media print {
   @page {
