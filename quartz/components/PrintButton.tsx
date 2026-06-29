@@ -1,9 +1,36 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import { classNames } from "../util/lang"
 
-const script = `
+const beforeDOMLoaded = `
+var s = document.createElement("script")
+s.src = "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+s.integrity = "sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+s.crossOrigin = "anonymous"
+s.referrerPolicy = "no-referrer"
+document.head.appendChild(s)
+`
+
+const afterDOMLoaded = `
 document.addEventListener("nav", () => {
-  document.querySelector(".print-button-btn")?.addEventListener("click", () => window.print())
+  document.querySelector(".print-button-btn")?.addEventListener("click", async () => {
+    const btn = document.querySelector(".print-button-btn")
+    const original = btn.innerHTML
+    btn.innerHTML = "Generating PDF..."
+    btn.disabled = true
+    try {
+      const el = document.querySelector(".center > article")
+      await html2pdf().set({
+        margin: [0.5, 0.5],
+        filename: document.title.replace(/[^a-z0-9]/gi, "_").toLowerCase() + ".pdf",
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+        pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+      }).from(el).save()
+    } finally {
+      btn.innerHTML = original
+      btn.disabled = false
+    }
+  })
 })
 `
 
@@ -64,6 +91,7 @@ PrintButton.css = `
 }
 `
 
-PrintButton.afterDOMLoaded = script
+PrintButton.beforeDOMLoaded = beforeDOMLoaded
+PrintButton.afterDOMLoaded = afterDOMLoaded
 
 export default (() => PrintButton) satisfies QuartzComponentConstructor
