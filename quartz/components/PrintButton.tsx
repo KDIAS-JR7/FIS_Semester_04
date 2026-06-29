@@ -15,21 +15,47 @@ document.addEventListener("nav", () => {
   document.querySelector(".print-button-btn")?.addEventListener("click", async () => {
     const btn = document.querySelector(".print-button-btn")
     const original = btn.innerHTML
-    btn.innerHTML = "Generating PDF..."
     btn.disabled = true
+
     try {
       const el = document.querySelector(".center > article")
-      await html2pdf().set({
-        margin: [0.5, 0.5],
-        filename: document.title.replace(/[^a-z0-9]/gi, "_").toLowerCase() + ".pdf",
-        html2canvas: { scale: 2, useCORS: true },
+      if (!el) return
+
+      btn.innerHTML = "Loading images..."
+      const imgs = el.querySelectorAll("img")
+      await Promise.all(Array.from(imgs).map(
+        img => img.complete ? Promise.resolve() : new Promise(r => { img.onload = r; img.onerror = r })
+      ))
+
+      btn.innerHTML = "Generating PDF..."
+      const filename = document.title.replace(/[^a-z0-9]/gi, "_").toLowerCase() + ".pdf"
+      const opt = {
+        margin: [0.4, 0.4],
+        filename: filename,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: null,
+          logging: false,
+          width: el.scrollWidth,
+          windowWidth: el.scrollWidth,
+        },
         jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
         pagebreak: { mode: ["avoid-all", "css", "legacy"] },
-      }).from(el).save()
-    } finally {
-      btn.innerHTML = original
-      btn.disabled = false
+      }
+
+      await html2pdf().set(opt).from(el).save()
+    } catch (e) {
+      console.error("PDF generation failed:", e)
+      btn.innerHTML = "PDF failed — try again"
+      setTimeout(() => { btn.innerHTML = original; btn.disabled = false }, 2000)
+      return
     }
+
+    btn.innerHTML = original
+    btn.disabled = false
   })
 })
 `
