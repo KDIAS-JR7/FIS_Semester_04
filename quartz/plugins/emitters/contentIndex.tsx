@@ -2,11 +2,20 @@ import { Root } from "hast"
 import { GlobalConfiguration } from "../../cfg"
 import { getDate } from "../../components/Date"
 import { escapeHTML } from "../../util/escape"
-import { FilePath, FullSlug, SimpleSlug, joinSegments, simplifySlug } from "../../util/path"
+import {
+  FilePath,
+  FullSlug,
+  SimpleSlug,
+  joinSegments,
+  simplifySlug,
+  slugifyFilePath,
+} from "../../util/path"
 import { QuartzEmitterPlugin } from "../types"
 import { toHtml } from "hast-util-to-html"
 import { write } from "./helpers"
 import { i18n } from "../../i18n"
+import { glob } from "../../util/glob"
+import path from "path"
 
 export type ContentIndexMap = Map<FullSlug, ContentDetails>
 export type ContentDetails = {
@@ -115,6 +124,22 @@ export const ContentIndex: QuartzEmitterPlugin<Partial<Options>> = (opts) => {
               : undefined,
             date: date,
             description: file.data.description ?? "",
+          })
+        }
+      }
+
+      // also scan for PDF files to include in the index
+      const pdfFiles = await glob("**/*.pdf", ctx.argv.directory, cfg.ignorePatterns)
+      for (const fp of pdfFiles) {
+        const slug = slugifyFilePath(fp as FilePath)
+        if (!linkIndex.has(slug)) {
+          linkIndex.set(slug, {
+            slug,
+            filePath: fp as FilePath,
+            title: path.basename(fp, ".pdf"),
+            links: [],
+            tags: [],
+            content: "",
           })
         }
       }
