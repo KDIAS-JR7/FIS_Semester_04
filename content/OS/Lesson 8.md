@@ -171,7 +171,7 @@ In an operating system (OS), memory management is a critical function that ensur
 
 The following are the most used algorithms:
 
-> ***1. First Fit***
+> **1. First Fit**
 > **2. Best Fit***
 > **3. Worst Fit***
 > **4. Next Fit***
@@ -230,15 +230,9 @@ Despite its advantages, the First Fit algorithm has a few downsides:
 ## 2. Best Fit
 Best-Fit Allocation is a memory allocation technique used in operating systems to allocate memory to a process. In Best-Fit, the operating system searches through the list of free blocks of memory to find the block that is closest in size to the memory request from the process. Once a suitable block is found, the operating system splits the block into two parts: the portion that will be allocated to the process, and the remaining free block.
 
-Advantages of Best-Fit Allocation include improved memory utilization, as it allocates the smallest block of memory that is sufficient to accommodate the memory request from the process. Additionally, Best-Fit can also help to reduce memory fragmentation, as it tends to allocate smaller blocks of memory that are less likely to become fragmented.
-
-Disadvantages of Best-Fit Allocation include increased computational overhead, as the search for the best-fit block of memory can be time-consuming and requires a more complex search algorithm. Additionally, Best-Fit may also result in increased fragmentation, as it may leave smaller blocks of memory scattered throughout the memory space.
 
 Overall, Best-Fit Allocation is a widely used memory allocation technique in operating systems, but its effectiveness may vary depending on the specifics of the system and the workload being executed.
 
-For both [fixed and dynamic memory allocation schemes](https://www.geeksforgeeks.org/operating-systems/partition-allocation-methods-in-memory-management/), the operating system must keep list of each memory location noting which are free and which are busy. Then as new jobs come into the system, the free partitions must be allocated.
-
-This method keeps the free/busy list in order by size - smallest to largest. In this method, the operating system first searches the whole of the memory according to the size of the given job and allocates it to the closest-fitting free partition in the memory, making it able to use memory efficiently. Here the jobs are in the order from smallest job to largest job.   
   
  
 
@@ -262,15 +256,6 @@ As illustrated in above figure, the operating system first search throughout the
 - May lead to increased internal fragmentation
 - Can result in slow memory allocation times. 
 
-Best-fit allocation is a memory allocation algorithm used in operating systems to allocate memory to processes. In this algorithm, the operating system searches for the smallest free block of memory that is big enough to accommodate the process being allocated memory.
-
-Here is a brief overview of the best-fit allocation algorithm:
-
-1. The operating system maintains a list of all free memory blocks available in the system.
-2. When a process requests memory, the operating system searches the list for the smallest free block of memory that is large enough to accommodate the process.
-3. If a suitable block is found, the process is allocated memory from that block.
-4. If no suitable block is found, the operating system can either wait until a suitable block becomes available or request additional memory from the system.
-5. The best-fit allocation algorithm has the advantage of minimizing external fragmentation, as it searches for the smallest free block of memory that can accommodate a process. However, it can also lead to more internal fragmentation, as processes may not use the entire memory block allocated to them.
 ## 3. Worst Fit
 In **Worst-Fit Memory Allocation** allocation technique, the process traverses the whole memory and always search for the largest hole/partition, and then the process is placed in that hole/partition. It is a slow process because it has to traverse the entire memory to search the largest hole. 
 
